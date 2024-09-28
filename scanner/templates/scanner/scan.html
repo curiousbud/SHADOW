@@ -1,0 +1,26 @@
+{% extends 'scanner/base.html' %}
+{% block content %}
+<div id="wrapper">
+    {% include 'partials/navbar.html' %}
+    {% include 'partials/sidebar.html' %}
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ form.target.id_for_label }}">{{ form.target.label }}</label>
+                    {{ form.target }}
+                    <p class="help-block">{{ form.target.help_text }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Target Type</label>
+                    {{ form.target_type }}
+                    <p class="help-block">{{ form.target_type.help_text }}</p>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <footer><p>All right reserved. &copy; Areeb Khan</p></footer>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}SHADOW - A Web Vulnerability Scanner{% endblock %}</title>
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet" />
+    <link href="{% static 'js/morris/morris-0.4.3.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/custom-styles.css' %}" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% block content %}
+    <div id="wrapper">
+        {% include 'partials/navbar.html' %}
+        {% include 'partials/sidebar.html' %}
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <footer><p>All right reserved. &copy Areeb Khan</a></p></footer>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+    {% block extra_js %}
+    <script src="{% static 'js/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.metisMenu.js' %}"></script>
+    <script src="{% static 'js/morris/raphael-2.1.0.min.js' %}"></script>
+    <script src="{% static 'js/morris/morris.js' %}"></script>
+    <script src="{% static 'js/custom-scripts.js' %}"></script>
+    {% endblock %}
+</body>
+</html>
