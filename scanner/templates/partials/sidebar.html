@@ -8,18 +8,18 @@
                 <a href="{% url 'scan' %}"><i class="fa fa-wrench"></i> Scan </a>
             </li>
             <li>
-                <a href="{% url 'ui_elements' %}"><i class="fa fa-desktop"></i> UI Elements</a>
+                <a href="{% url 'vulnerability' %}"><i class="fa fa-exclamation"></i> Vulnerabilities</a>
             </li>
             <li>
-                <a href="{% url 'chart' %}"><i class="fa fa-bar-chart-o"></i> Charts</a>
+                <a href="{% url 'target' %}"><i class="fa fa-bullseye"></i> Targets</a>
             </li>
             <li>
-                <a href="{% url 'tab_panel' %}"><i class="fa fa-qrcode"></i> Tabs & Panels</a>
+                <a href="{% url 'report' %}"><i class="fa fa-file"></i> Reports</a>
             </li>
             <li>
-                <a href="{% url 'table' %}"><i class="fa fa-table"></i> Responsive Tables</a>
+                <a href="{% url 'notify' %}"><i class="fa fa-bell"></i> Notifications</a>
             </li>
-            <li>
+            {% comment %} <li>
                 <a href="#"><i class="fa fa-sitemap"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li><a href="#">Second Level Link</a></li>
@@ -36,7 +36,7 @@
             </li>
             <li>
                 <a href="{% url 'empty' %}"><i class="fa fa-fw fa-file"></i> Empty Page</a>
-            </li>
+            </li> {% endcomment %}
         </ul>
     </div>
 </nav>

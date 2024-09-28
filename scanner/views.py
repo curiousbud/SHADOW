@@ -30,6 +30,18 @@ def ui_elements(request):
 def base(request):
     return render(request,'scanner/base.html')
 
+def vulnerability(request):
+    return render(request,'scanner/vulnerability.html')
+
+def target(request):
+    return render(request,'scanner/target.html')
+
+def report(request):
+    return render(request,'scanner/report.html')
+
+def notify(request):
+    return render(request,'scanner/notify.html')
+
 def scan(request):
     if request.method == 'POST':
         form = ScannerForm(request.POST)
