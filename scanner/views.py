@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.views.decorators.http import require_POST
@@ -27,25 +28,23 @@ def login_view(request):
 def logout_view(request):
     logout(request)  # Log out the user
     messages.success(request, "You have been logged out.")
-    return redirect('login',{'form': form})
+    return redirect('login')
 
 # Registration View
 def register_view(request):
-    form = UserCreationForm()
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = User(
-                username=form.cleaned_data['username'],
-                email=form.cleaned_data['email']
-            )
-            user.set_password(form.cleaned_data['password'])
-            user.save()
+            user = form.save()  # This should save the user
             messages.success(request, 'Registration successful! You can now log in.')
-            return redirect('registration/login.html', {'form': form})  # Redirect to login page
+            return redirect('login')  # Redirect to login after successful registration
+        else:
+            # Add this to display form errors in case something is wrong
+            print(form.errors)  # Debugging step to see why form might be invalid
+            messages.error(request, 'Registration failed. Please correct the errors.')
     else:
         form = UserCreationForm()
-    
+
     return render(request, 'registration/signup.html', {'form': form})
 
 @login_required
