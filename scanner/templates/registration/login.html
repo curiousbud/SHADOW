@@ -1,0 +1,19 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="wrapper">
+    {% include 'partials/navbar.html' %}
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <form method="post">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit">Submit</button>
+            </form>
+            <p class="toggle-link">Don't have an account? <a href="{% url 'register_view' %}" id="showSignIn">Sign Up</a></p>
+            <footer><p>All right reserved. &copy Areeb Khan</a></p></footer>
+        </div>
+    </div>
+</div>
+{% endblock content %}

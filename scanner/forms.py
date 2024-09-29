@@ -1,4 +1,5 @@
 from django import forms
+from .models import User
 
 class ScannerForm(forms.Form):
     TARGET_CHOICES = [
@@ -19,3 +20,7 @@ class ScannerForm(forms.Form):
         widget=forms.RadioSelect,
         help_text="Select the type of target you're entering."
     )
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=150)
+    password = forms.CharField(widget=forms.PasswordInput())

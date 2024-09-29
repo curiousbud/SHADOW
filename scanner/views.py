@@ -1,47 +1,83 @@
-from django.shortcuts import render
-from .forms import ScannerForm
+from django.shortcuts import render,redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+from django.views.decorators.http import require_POST
+from .forms import ScannerForm,LoginForm
 
 # Create your views here.
 
+# Login View
+def login_view(request):
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')  # Redirect to your dashboard
+        else:
+            messages.error(request, 'Invalid username or password.')
+    return render(request, 'registration/login.html', {'form': form})  # Render the login template
+
+# Logout View
+# @require_POST
+@login_required  # Ensure only logged-in users can access this
+def logout_view(request):
+    messages.success(request, "You have been logged out.")
+    return redirect('registration/login')  # Redirect to the login page
+
+# Registration View
+def register_view(request):
+    form = UserCreationForm()
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = User(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email']
+            )
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            messages.success(request, 'Registration successful! You can now log in.')
+            return redirect('registration/login.html', {'form': form})  # Redirect to login page
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'registration/signup.html', {'form': form})
+
+@login_required
 def index(request):
     return render(request,'scanner/index.html')
 
-def chart(request):
-    return render(request,'scanner/chart.html')
-
-def empty(request):
-    return render(request,'scanner/empty.html')
-    
-def form(request):
-    return render(request,'scanner/form.html')
-
-def tab_panel(request):
-    return render(request,'scanner/tab-panel.html')
-
-def table(request):
-    return render(request,'scanner/table.html')
-
-def empty(request):
-    return render(request,'scanner/empty.html')
-
-def ui_elements(request):
-    return render(request,'scanner/ui-elements.html')
-
-def base(request):
-    return render(request,'scanner/base.html')
-
+@login_required
 def vulnerability(request):
     return render(request,'scanner/vulnerability.html')
 
+@login_required
 def target(request):
     return render(request,'scanner/target.html')
 
+@login_required
 def report(request):
     return render(request,'scanner/report.html')
 
+@login_required
 def notify(request):
     return render(request,'scanner/notify.html')
 
+@login_required
+def profile(request):
+    return render(request,'partials/profile.html')
+
+@login_required
+def settings(request):
+    return render(request,'partials/settings.html')
+
+@login_required
 def scan(request):
     if request.method == 'POST':
         form = ScannerForm(request.POST)

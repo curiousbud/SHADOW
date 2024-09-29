@@ -1,18 +1,17 @@
-from django.urls import path
+from django.urls import path,include
 from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("chart", views.chart, name="chart"),
-    path("empty", views.empty, name="empty"),
-    path("ui_elements", views.ui_elements, name="ui_elements"),
-    path("form", views.form, name="form"),
-    path("tab_panel", views.tab_panel, name="tab_panel"),
-    path("table", views.table, name="table"),
-    path("base", views.base, name="base"),
-    path("scan", views.scan, name="scan"),
-    path("target", views.target, name="target"),
-    path("report", views.report, name="report"),
-    path("notify", views.notify, name="notify"),
-    path("vulnerability", views.vulnerability, name="vulnerability")
+    path('accounts/', include("django.contrib.auth.urls")),
+    path('signup/', views.register_view, name='register_view'),
+    path('login/', views.login_view, name='login_view'),
+    path('logout/', views.logout_view, name='logout'),
+    path("scan/", views.scan, name="scan"),
+    path("target/", views.target, name="target"),
+    path("report/", views.report, name="report"),
+    path("notify/", views.notify, name="notify"),
+    path("profile/", views.profile, name="profile"),
+    path("settings/", views.settings, name="settings"),
+    path("vulnerability/", views.vulnerability, name="vulnerability")
 ]

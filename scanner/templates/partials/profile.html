@@ -1,0 +1,27 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="wrapper">
+    {% include 'partials/navbar.html' %}
+    {% include 'partials/sidebar.html' %}
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <div class="profile-container">
+                <img src="https://via.placeholder.com/100" alt="Profile Picture">
+                <h1>John Doe</h1>
+                <p>Web Developer</p>
+                <p>Mumbai, India</p>
+                <div class="actions">
+                    <button>Follow</button>
+                    <button>Message</button>
+                </div>
+            </div>
+            <footer><p>All right reserved. &copy Areeb Khan</a></p></footer>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+    
