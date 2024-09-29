@@ -5,13 +5,13 @@
                 <a class="{% if request.resolver_match.url_name == 'index' %}active-menu{% endif %}" href="{% url 'index' %}"><i class="fa fa-dashboard"></i> Dashboard</a>
             </li>
             <li>
+                <a href="{% url 'target' %}"><i class="fa fa-bullseye"></i> Targets</a>
+            </li>
+            <li>
                 <a href="{% url 'scan' %}"><i class="fa fa-wrench"></i> Scan </a>
             </li>
             <li>
                 <a href="{% url 'vulnerability' %}"><i class="fa fa-exclamation"></i> Vulnerabilities</a>
-            </li>
-            <li>
-                <a href="{% url 'target' %}"><i class="fa fa-bullseye"></i> Targets</a>
             </li>
             <li>
                 <a href="{% url 'report' %}"><i class="fa fa-file"></i> Reports</a>
