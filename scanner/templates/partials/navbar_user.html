@@ -5,12 +5,16 @@
         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
     </a>
     <ul class="dropdown-menu dropdown-user">
-        <li><a href="{% url 'profile' %}"><i class="fa fa-user fa-fw"></i> User Profile</a>
-        </li>
-        <li><a href="{% url 'settings' %}"><i class="fa fa-gear fa-fw"></i> Settings</a>
-        </li>
+        <li><a href="{% url 'profile' %}"><i class="fa fa-user fa-fw"></i> User Profile</a></li>
+        <li><a href="{% url 'settings' %}"><i class="fa fa-gear fa-fw"></i> Settings</a></li>
         <li class="divider"></li>
-        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+        <li>
+            <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item" style="background: none; border: none; padding-left: 20px; color: #333; cursor: pointer;">
+                    <i class="fa fa-sign-out fa-fw"></i> Logout
+                </button>
+            </form>
         </li>
     </ul>
 </li>

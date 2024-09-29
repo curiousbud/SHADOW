@@ -30,9 +30,9 @@ ALLOWED_HOSTS = []
 
 # Custom User Authentications
 # AUTH_USER_MODEL = 'scanner.User'
-LOGIN_REDIRECT_URL = 'scanner/index/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
-LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = 'index'  # Redirect to the index view after login
+LOGOUT_REDIRECT_URL = 'login'  # Redirect to the named URL for login after logout
+LOGIN_URL = 'login'  # Redirect to the named URL for login if not authenticated
 
 # Application definition
 

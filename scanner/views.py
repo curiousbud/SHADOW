@@ -1,5 +1,4 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
@@ -24,11 +23,11 @@ def login_view(request):
     return render(request, 'registration/login.html', {'form': form})  # Render the login template
 
 # Logout View
-# @require_POST
-@login_required  # Ensure only logged-in users can access this
+@login_required
 def logout_view(request):
+    logout(request)  # Log out the user
     messages.success(request, "You have been logged out.")
-    return redirect('registration/login')  # Redirect to the login page
+    return redirect('login',{'form': form})
 
 # Registration View
 def register_view(request):
