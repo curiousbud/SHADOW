@@ -1,17 +1,31 @@
 {% extends 'scanner/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <div id="wrapper">
     {% include 'partials/navbar.html' %}
     <div id="page-wrapper">
         <div id="page-inner">
-            <form method="post">
-                {% csrf_token %}
-                {{ form }}
-                <button type="submit">Submit</button>
-            </form>
-            <p >Already have an account? <a href="{% url 'login_view' %}" id="showSignIn">Sign In</a></p>
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="text-center">Sign Up</h3>
+                            </div>
+                            <div class="card-body">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form|crispy }}  <!-- Using crispy forms to apply Bootstrap styling -->
+                                    <button type="submit" class="btn btn-success px-4 float-end mt-4">Sign Up</button>
+                                </form>
+                                <p class="text-center mt-3">Already have an account? <a href="{% url 'login_view' %}">Login</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <footer><p>All right reserved. &copy Areeb Khan</a></p></footer>
         </div>
     </div>

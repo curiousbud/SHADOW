@@ -6,12 +6,25 @@
     {% include 'partials/navbar.html' %}
     <div id="page-wrapper">
         <div id="page-inner">
-            <form method="post">
-                {% csrf_token %}
-                {{ form }}
-                <button type="submit">Submit</button>
-            </form>
-            <p class="toggle-link">Don't have an account? <a href="{% url 'register_view' %}" id="showSignIn">Sign Up</a></p>
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="text-center">Login</h3>
+                            </div>
+                            <div class="card-body">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}  <!-- Alternatively, you can use form.as_bootstrap if using crispy-forms -->
+                                    <button type="submit" class="btn btn-primary btn-block mt-3">Login</button>
+                                </form>
+                                <p class="text-center mt-3">Don't have an account? <a href="{% url 'register_view' %}">Sign Up</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <footer><p>All right reserved. &copy Areeb Khan</a></p></footer>
         </div>
     </div>
