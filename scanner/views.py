@@ -129,14 +129,17 @@ def scan(request):
     if request.method == 'POST':
         form = ScannerForm(request.POST)
         if form.is_valid():
-            # Process the form data
-            target = form.cleaned_data['target']
-            target_type = form.cleaned_data['target_type']
-            # Add your logic here to handle the submitted data
+            # Save the form data to the model
+            scanner = form.save(commit=False)  # Get the form instance without saving to database yet
+            scanner.target = form.cleaned_data['target']
+            scanner.target_type = form.cleaned_data['target_type']
+            scanner.save()  # Now save it to the database
+            return redirect('target')  # Ensure 'target' is correctly mapped in your urls.py
     else:
         form = ScannerForm()
     
     return render(request, 'scanner/scan.html', {'form': form})
+
 
 @login_required
 def start_scan(request, target_id):
