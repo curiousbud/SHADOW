@@ -2,6 +2,9 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from .tasks import run_scan
+from .models import Target,Vulnerability, ScanReport, Notification
 from django.contrib.auth.forms import UserCreationForm
 from django.views.decorators.http import require_POST
 from .forms import ScannerForm,LoginForm
@@ -53,19 +56,65 @@ def index(request):
 
 @login_required
 def vulnerability(request):
-    return render(request,'scanner/vulnerability.html')
+    vulnerabilities = Vulnerability.objects.filter(target__user=request.user)
+    return render(request, 'scanner/vulnerability.html', {'vulnerabilities': vulnerabilities})
 
 @login_required
 def target(request):
-    return render(request,'scanner/target.html')
+    targets = Target.objects.filter(user=request.user)
+    
+    if request.method == 'POST':
+        # Handle new target submission
+        target_input = request.POST.get('url', '').strip()
+        
+        if target_input:
+            # Create new target
+            target = Target.objects.create(
+                user=request.user,
+                # Determine if input is URL, IP, or domain and set accordingly
+                url=target_input if target_input.startswith(('http://', 'https://')) else None,
+                ip_address=target_input if is_valid_ip(target_input) else None,
+                domain=target_input if not (target_input.startswith(('http://', 'https://')) or is_valid_ip(target_input)) else None
+            )
+            
+            try:
+                # Start the scan immediately for new targets
+                run_scan.delay(target.id)
+                messages.success(request, f'Target added and scan started for {target_input}')
+            except Exception as e:
+                messages.error(request, f'Target added but failed to start scan: {str(e)}')
+            
+            return redirect('target')
+        else:
+            messages.error(request, 'Please provide a valid target')
+    
+    return render(request, 'scanner/target.html', {'targets': targets})
+
+# Helper function to validate IP addresses
+def is_valid_ip(ip_str):
+    try:
+        # Split the IP string into octets
+        parts = ip_str.split('.')
+        
+        # Check if we have exactly 4 parts
+        if len(parts) != 4:
+            return False
+            
+        # Check that each number is between 0 and 255
+        return all(0 <= int(part) <= 255 for part in parts)
+    except (AttributeError, TypeError, ValueError):
+        return False
+
 
 @login_required
 def report(request):
-    return render(request,'scanner/report.html')
+    reports = ScanReport.objects.filter(target__user=request.user)
+    return render(request, 'scanner/report.html', {'reports': reports})
 
 @login_required
 def notify(request):
-    return render(request,'scanner/notify.html')
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_date')
+    return render(request, 'scanner/notify.html', {'notifications': notifications})
 
 @login_required
 def profile(request):
@@ -88,4 +137,23 @@ def scan(request):
         form = ScannerForm()
     
     return render(request, 'scanner/scan.html', {'form': form})
+
+@login_required
+def start_scan(request, target_id):
+    # Get the target and verify it belongs to the requesting user
+    target = get_object_or_404(Target, id=target_id, user=request.user)
+    
+    try:
+        # Start the scan using Celery task
+        run_scan.delay(target_id)
+        messages.success(request, f'Scan started for {target.url or target.ip_address or target.domain}')
+    except Exception as e:
+        messages.error(request, f'Failed to start scan: {str(e)}')
+    
+    # Redirect back to the targets page
+    return redirect('target')
+
+
+
+
 

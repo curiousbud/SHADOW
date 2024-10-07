@@ -13,5 +13,6 @@ urlpatterns = [
     path("notify/", views.notify, name="notify"),
     path("profile/", views.profile, name="profile"),
     path("settings/", views.settings, name="settings"),
-    path("vulnerability/", views.vulnerability, name="vulnerability")
+    path("vulnerability/", views.vulnerability, name="vulnerability"),
+    path('start-scan/<int:target_id>/', views.start_scan, name='start-scan')
 ]
